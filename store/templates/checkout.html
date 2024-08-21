@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .home-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #ffd6d6;
+            color: #333;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .home-button:hover {
+            background-color: #e7e7e7;
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'home' %}" class="home-button">Go to Home</a>
+    <h1>Checkout</h1>
+   
+    <h2>Order Details</h2>
+    <table>
+        <tr>
+            <th>Order ID</th>
+            <td>{{ order.id }}</td>
+        </tr>
+        <tr>
+            <th>Order Date</th>
+            <td>{{ order.created_at }}</td>
+        </tr>
+        <tr>
+            <th>Shipping Address</th>
+            <td>{{ order_summary.shipping_address }}</td>
+        </tr>
+        <tr>
+            <th>Payment Method</th>
+            <td>{{ order_summary.payment_method }}</td>
+        </tr>
+    </table>
+    
+    <h2>Order Items</h2>
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+        {% for order_item in order_items %}
+        <tr>
+            <td>{{ order_item.product.name }}</td>
+            <td>{{ order_item.quantity }}</td>
+            <td>{{ order_item.price }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <h2>Order Summary</h2>
+    <table>
+        <tr>
+            <th>Total Price with Shipping (INCLUDED SHIPPING CHARGE)</th>
+            <td>NPR {{ order_summary.total_price_with_shipping }}</td>
+        </tr>
+    </table>
+    
+    <h2>Contact Information</h2>
+    <p><strong>Mobile:</strong> {{ mobile }}</p>
+    
+    <!-- Add payment processing logic or payment button here if needed -->
+    <form action="{% url 'khalti_payment' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="amount" value="{{ order_summary.total_price_with_shipping }}">
+        <input type="hidden" name="address" value="{{ order_summary.shipping_address }}">
+        <input type="hidden" name="phone" value="{{ mobile }}">
+        <button type="submit" class="button">Proceed To Payment</button>
+    </form>
+    
+</body>
+</html>

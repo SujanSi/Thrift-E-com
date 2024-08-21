@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Product</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Add a New Product</h1>
+        <form method="post">
+            
+            <div class="form-group">
+                <label for="id_name">Product Name</label>
+                <input type="text" name="name" maxlength="100" required id="id_name" class="form-control" placeholder="Enter product name">
+            </div>
+            <div class="form-group">
+                <label for="id_quantity">Quantity in Stock</label>
+                <input type="number" name="quantity" required id="id_quantity" class="form-control" placeholder="Enter quantity">
+            </div>
+            <div class="form-group">
+                <label for="id_price">Price (Rs)</label>
+                <input type="number" step="0.01" name="price" required id="id_price" class="form-control" placeholder="Enter price">
+            </div>
+            <div class="form-group">
+                <label for="id_discounted_price">Discounted Price (Rs)</label>
+                <input type="number" step="0.01" name="discounted_price" id="id_discounted_price" class="form-control" placeholder="Enter discounted price">
+            </div>
+            <div class="form-group">
+                <label for="id_category">Category</label>
+                <select name="category" required id="id_category" class="form-control">
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
+    </div>
+</body>
+</html>

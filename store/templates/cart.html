@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - OnlineThrift</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<div class="header">
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a href="{% url 'homepage' %}"><img src="{% static 'images/logo2.png' %}" width="125px"></a>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="{% url 'homepage' %}">Home</a></li>
+                    <li><a href="{% url 'productpage' %}">Products</a></li>
+                    <li><a href="{% url 'accountpage' %}">Account</a></li>
+                    <li><a href="{% url 'cartpage' %}">Cart</a></li>
+                    <li><a href="{% url 'order_list' %}">Check My Order</a></li>
+                    <li><a href="{% url 'user_logout' %}">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Main content -->
+<div class="main-content">
+    <!-- Cart items details -->
+    <div class="small-container cart-page">
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th></th>
+            </tr>
+            {% for item in cart_items %}
+                <tr>
+                    <td>
+                        <div class="cart-info">
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                            <div>
+                                <p>{{ item.product.name }}</p>
+                                <small>Price: Rs{{ item.product.price }}</small>
+                                <small>Size: {{ item.product.size }}</small> <!-- Assuming you have a 'size' attribute in Product model -->
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ item.quantity }}</td>
+                    <td>Rs{{ item.product.price|floatformat:2 }}</td>
+                    <td>
+                        <form action="{% url 'delete_cart' item.product.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <a href="{% url 'productpage' %}">CONTINUE SHOPPING</a>
+    </div>
+
+    <!-- Checkout section -->
+    <div class="checkout">
+        <h2>Cart Total</h2>
+        <div class="total">
+            <p>Subtotal: Rs{{ subtotal }}</p>
+            <p>Shipping Charge: Rs{{ shipping_charge }}</p>
+            <p>Total: Rs{{ total_price_with_shipping }}</p>
+        </div>
+        <form id="checkoutForm" method="post" action="{% url 'checkout' %}">
+            {% csrf_token %}
+            <div class="checkout-form">
+                <input type="text" name="address" placeholder="Address" required>
+                <input type="text" name="mobile" placeholder="Mobile" required>
+                <select name="payment_method" id="paymentMethod" required>
+                    <option value="cash_on_delivery">Cash On Delivery</option>
+                    <option value="khalti">Khalti</option>
+                </select>
+                <button type="submit" id="placeOrderBtn">Place order</button>
+            </div>
+        </form>
+</div>
+
+{% if show_popup %}
+        <script>
+            alert("Your order has been placed successfully!");
+            window.location.href = "{% url 'home' %}";
+        </script>
+    {% endif %}
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col-1">
+                <h3>Download our App</h3>
+                <p>Download our app for Android and IOS mobile phones.</p>
+                <div class="app-logo">
+                    <img src="{% static 'images/google.png' %}">
+                    <img src="{% static 'images/ios.jpg' %}">
+                </div>
+            </div>
+            <div class="footer-col-2">
+                <a href="{% url 'homepage' %}"><img src="{% static 'images/logo2.png' %}"></a>
+                <p>Our purpose is to sustainably make the pleasure and benefits of sports accessible to the many.</p>
+            </div>
+            <div class="footer-col-3">
+                <h3>Useful links</h3>
+                <ul>
+                    <li><a href="#">Coupons</a></li>
+                    <li><a href="#">Blog Post</a></li>
+                    <li><a href="#">Return Policy</a></li>
+                    <li><a href="#">Join Affiliate</a></li>
+                </ul>
+            </div>
+            <div class="footer-col-4">
+                <h3>Follow Us</h3>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Youtube</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="copyright">Copyright 2020 - No copying!</p>
+    </div>
+</div>
+{% comment %} 
+<!-- JavaScript for toggle menu -->
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+    MenuItems.style.maxHeight = "0px";
+
+    function menutoggle() {
+        if (MenuItems.style.maxHeight == "0px") {
+            MenuItems.style.maxHeight = "200px";
+        } else {
+            MenuItems.style.maxHeight = "0px";
+        }
+    }
+</script> {% endcomment %}
+
+<!-- JavaScript for handling form submission -->
+{% comment %} <script>
+    document.getElementById('checkoutForm').addEventListener('submit', function(event) {
+        var paymentMethod = document.getElementById('paymentMethod').value;
+        var form = event.target;
+
+        // Set form action to the checkout URL for both payment methods
+        form.action = "{% url 'checkout' %}";
+    });
+</script> {% endcomment %}
+
+</body>
+</html>

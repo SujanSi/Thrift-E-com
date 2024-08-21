@@ -1,0 +1,281 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail - OnlineThrift</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* Additional styles specific to product detail page */
+        .product-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 50px;
+        }
+        .product-details {
+            width: 50%;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .product-details img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .product-details h2 {
+            margin-bottom: 10px;
+        }
+        .product-details .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .product-details form {
+            margin-top: 20px;
+        }
+        .product-details input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        .product-details input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="navbar">
+        <div class="logo">
+            <a href="{% url 'homepage' %}"><img src="{% static 'images/logo2.png' %}" width="125px"></a>
+        </div>
+        <nav>
+            <ul id="MenuItems">
+                <li><a href="{% url 'homepage' %}">Home</a></li>
+                <li><a href="{% url 'productpage' %}">Products</a></li>
+                <li><a href="{% url 'accountpage' %}">Account</a></li>
+                <li><a href="{% url 'cartpage' %}">Cart</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Single product details -->
+    <div class="small-container single-product">
+        <div class="row">
+            <div class="col-2">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            </div>
+            <div class="col-2">
+                <h1>{{ product.name }}</h1>
+                <h4>Rs{{ product.price }}</h4>
+                <h4>Discounted Rs{{ product.discounted_price }}</h4>
+                <p>{{ product.description }}</p>
+                <form method="post" action="{% url 'add_to_cart' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    <label for="size">Size:</label>
+                    <select name="size" id="size">
+                        <option value="small">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="large">Large</option>
+                    </select>
+                    <button type="submit" class="btn btn-info">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+            {% comment %} <div class="col-2">
+                <img src="{% static 'images/comfydresss.jpeg' %}" width="100%" id="productImg">
+                <div class="small-img-row">
+                    <div class="small-img-col">
+                        <img src="{% static 'images/comfydresss.jpeg' %}" width="100%" class="small-img">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="{% static 'images/comfydresss.jpeg' %}" width="100%" class="small-img">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="{% static 'images/comfydresss.jpeg' %}" width="100%" class="small-img">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="{% static 'images/comfydresss.jpeg' %}" width="100%" class="small-img">
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <p>Home/T-shirt</p>
+                <h1>T-shirt</h1>
+                <h4>$50.00</h4>
+                
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                 {% comment %} <form method="post" action="{% url 'add_to_cart' %}">   <select name="size">
+                        <option value="" disabled selected>Select Size</option>
+                        <option value="XXL">XXL</option>
+                        <option value="XL">XL</option>
+                        <option value="Large">Large</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Small">Small</option>
+                    </select>
+                    <input type="number" name="quantity" value="1" min="1">
+                    <input type="submit" value="Add To Cart" class="btn">
+                </form> {% endcomment %}
+                {% comment %}
+                <h3>Product Details <i class="fa fa-indent"></i></h3>
+                <br>
+                <p>Give your summer wardrobe a style upgrade with the premium converse pair. Team it with a pair of shorts for your outings. A must buy shoes that is evergreen in fashion world.</p>
+            </div>
+        </div>
+    </div> {% endcomment %}
+
+    <!-- Title -->
+    <div class="small-container">
+        <div class="row row-2">
+            <h2>Related Products</h2>
+            <p>View More</p>
+        </div>
+    </div>
+
+    <!-- Products -->
+    <div class="small-container">
+        <div class="row">
+            <div class="col-4">
+                <img src="{% static 'Picsart/IMG_7896.JPG' %}">
+                <h4>Red Printed T-shirt</h4>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <p>$50.0</p>
+            </div>
+            <div class="col-4">
+                <img src="{% static 'Picsart/IMG_7891.JPG' %}">
+                <h4>Red Printed T-shirt</h4>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                </div>
+                <p>$50.0</p>
+            </div>
+            <div class="col-4">
+                <img src="{% static 'Picsart/IMG_7893.JPG' %}">
+                <h4>Red Printed T-shirt</h4>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                </div>
+                <p>$50.0</p>
+            </div>
+            <div class="col-4">
+                <img src="{% static 'Picsart/IMG_7894.JPG' %}">
+                <h4>Red Printed T-shirt</h4>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                </div>
+                <p>$50.0</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col-1">
+                    <h3>Download our App</h3>
+                    <p>Download our app for Android and IOS mobile phone.</p>
+                    <div class="app-logo">
+                        <img src="{% static 'images/IMG_7898.jpg' %}">
+                        <img src="{% static 'images/IMG_7889.jpg' %}">
+                    </div>
+                </div>
+                <div class="footer-col-2">
+                    <img src="{% static 'images/logo2.png' %}">
+                    <p>Our purpose is to sustainably make the pleasure and benefits of sports accessible to the many.</p>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Useful links</h3>
+                    <ul>
+                        <li>Coupons</li>
+                        <li>Blog Post</li>
+                        <li>Return Policy</li>
+                        <li>Join Affiliate</li>
+                    </ul>
+                </div>
+                <div class="footer-col-4">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li>Facebook</li>
+                        <li>Twitter</li>
+                        <li>Instagram</li>
+                        <li>Youtube</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p class="copyright">Copyright 2020 - No copying!</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- JavaScript for toggle menu -->
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+
+    MenuItems.style.maxHeight = "0px";
+
+    function menutoggle() {
+        if (MenuItems.style.maxHeight == "0px") {
+            MenuItems.style.maxHeight = "200px";
+        } else {
+            MenuItems.style.maxHeight = "0px";
+        }
+    }
+</script>
+
+<!-- JavaScript for product gallery -->
+<script>
+    var productImg = document.getElementById("productImg");
+    var smallImg = document.getElementsByClassName("small-img");
+
+    smallImg[0].onclick = function() {
+        productImg.src = smallImg[0].src;
+    }
+    smallImg[1].onclick = function() {
+        productImg.src = smallImg[1].src;
+    }
+    smallImg[2].onclick = function() {
+        productImg.src = smallImg[2].src;
+    }
+    smallImg[3].onclick = function() {
+        productImg.src = smallImg[3].src;
+    }
+</script>
+
+</body>
+</html>

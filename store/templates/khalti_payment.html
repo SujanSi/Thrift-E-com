@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khalti Payment</title>
+</head>
+<body>
+    <h1>Proceed to Khalti Payment</h1>
+
+    <form method="post" action="{% url 'submit_khalti_payment' %}">
+        {% csrf_token %}
+        <input type="hidden" name="purchase_order_id" value="{{ purchase_order_id }}">
+        <input type="hidden" name="purchase_order_name" value="Product Name">
+        <input type="hidden" name="amount" value="{{ amount }}">
+        <input type="hidden" name="return_url" value="http://localhost:8000/cart/">
+        <button type="submit">Pay with Khalti</button>
+        
+    </form>
+
+</body>
+</html>

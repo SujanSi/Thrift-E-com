@@ -1,0 +1,79 @@
+<!-- my_ordered_products.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Ordered Products</title>
+    <style>
+        /* Add your CSS styles here */
+        /* Example: */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        /* Alternate row shading */
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9; /* Light grey */
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #ffffff; /* White */
+        }
+        /* Slightly darker shading after each row */
+        tbody tr:hover {
+            background-color: lightblue; /* Light grey */
+        }
+    </style>
+</head>
+<body>
+    <h1>My Ordered Products</h1>
+    
+    {% if orders %}
+    <table>
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Order Date</th>
+                <th>Shipping Address</th>
+                <th>Payment Method</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            {% for item in order.order_items.all %}
+            <tr>
+                {% if forloop.first %}
+                <td rowspan="{{ order.order_items.count }}">{{ order.id }}</td>
+                <td rowspan="{{ order.order_items.count }}">{{ order.created_at }}</td>
+                <td rowspan="{{ order.order_items.count }}">{{ order.shipping_address }}</td>
+                <td rowspan="{{ order.order_items.count }}">{{ order.payment_method }}</td>
+                {% endif %}
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.status }}</td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No orders found.</p>
+    {% endif %}
+    
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!-- templates/my_product_orders.html -->
+
+{% block content %}
+  <h2>My Product Orders</h2>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 18px;
+      text-align: left;
+    }
+    table th, table td {
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+    }
+    table th {
+      background-color: #f4f4f4;
+    }
+    table tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  </style>
+  {% if orders %}
+    <table>
+      <thead>
+        <tr>
+          <th>Customer Email</th>
+          <th>Product Name</th>
+          <th>Quantity</th>
+          <th>Status</th>
+          <th>Payment Method</th>
+          <th>Total Amount</th>
+          <th>Shipping Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order_item in orders %}
+          <tr>
+            <td>{{ order_item.order.customer.user }}</td>
+            <td>{{ order_item.product.name }}</td>
+            <td>{{ order_item.quantity }}</td>
+            <td>{{ order_item.status }}</td>
+            <td>{{ order_item.order.payment_method }}</td>
+            <td>${{ order_item.order.summary.total_price_with_shipping }}</td>
+            <td>{{ order_item.order.shipping_address }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No orders for your products.</p>
+  {% endif %}
+{% endblock %}
